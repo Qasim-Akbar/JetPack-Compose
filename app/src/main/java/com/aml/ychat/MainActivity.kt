@@ -21,7 +21,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -67,42 +71,46 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContent {
-
-            val snackbarHostState = remember { SnackbarHostState() }
-            var textFieldState by remember {
-                mutableStateOf("")
-            }
-            val scope = rememberCoroutineScope()
-            Scaffold (
-                modifier = Modifier.fillMaxSize().padding(30.dp),
-                snackbarHost = { SnackbarHost(hostState =  snackbarHostState) }
-                ) { innerPadding ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxSize().padding(innerPadding)
-                ) {
-                    TextField(
-                        value = textFieldState,
-                        label = {
-                            Text("Enter your name")
-                        },
-                        onValueChange = {
-                            textFieldState = it
-                        },
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+            /*val scrollState = rememberScrollState()
+            Column(
+                modifier = Modifier
+                    .verticalScroll(scrollState)
+            ) {
+                for(i in 1..50){
+                    Text(
+                        text = "item $i",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp)
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = {
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Hello $textFieldState")
-                        }
-                    }) {
-                        Text("Pls greet me")
-                    }
                 }
+            }*/
 
+            LazyColumn {
+                itemsIndexed(
+                    listOf("this", "is", "Jetpack", "Compose")
+                ){ index, item ->
+                    Text(
+                        text = item,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp)
+                    )
+                }
+               /* items(5000){
+                    Text(
+                        text = "item $it",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp)
+                    )
+                }*/
             }
         }
     }
